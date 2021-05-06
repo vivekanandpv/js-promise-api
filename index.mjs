@@ -9,7 +9,7 @@ function square(n) {
 function cube(n) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve(n * n * n);
+      reject(new Error('Oops!'));
     }, 1000);
   });
 }
@@ -22,17 +22,17 @@ function increment(n) {
   });
 }
 
-square(5)
-  .then((result) => cube(result)) //  cube returns promise
-  .then((result) => increment(result)) //  increment returns promise
-  .then((result) => console.log('then', result)) //  chained; result comes from increment now
-  .catch((error) => console.log('catch', error))
+square(5) //  resolves
+  .then((result) => cube(result)) //  rejects
+  .then((result) => increment(result)) //  doesn't activate
+  .then((result) => console.log('then', result)) //  doesn't activate
+  .catch((error) => console.log('catch', error.message)) //  activates because of rejection
   .finally(() => console.log('finally'));
 
 console.log('End of script');
 
 //  because promise is asynchronous, we see:
 //  End of script
-//  -- 2.5 seconds delay
-//  then 15626      ((5^2)^3 + 1 = 15626)
+//  -- 2 seconds delay
+//  catch Oops!
 //  finally
