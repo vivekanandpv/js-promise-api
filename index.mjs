@@ -1,20 +1,22 @@
-function foo() {
-  //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#constructor
+function square(n) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve('Hi there!');
-    }, 2000);
+      resolve(n * n);
+    }, 1000);
   });
 }
 
-//  we get a promise here
-const promise = foo();
+function cube(n) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(n * n * n);
+    }, 1000);
+  });
+}
 
-//  provide then, catch, and finally callbacks to this promise
-//  they will be invoked asynchronously
-
-promise
-  .then((result) => console.log('then', result))
+square(5)
+  .then((result) => cube(result)) //  cube returns promise
+  .then((result) => console.log('then', result)) //  chained; result comes from cube now
   .catch((error) => console.log('catch', error))
   .finally(() => console.log('finally'));
 
@@ -23,5 +25,5 @@ console.log('End of script');
 //  because promise is asynchronous, we see:
 //  End of script
 //  -- 2 seconds delay
-//  then Hi there!
+//  then 15625
 //  finally
