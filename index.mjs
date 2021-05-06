@@ -1,5 +1,7 @@
 function foo() {
-  return Promise.resolve('Hi there!');
+  //  usually, promise is rejected with an error object
+  //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+  return Promise.reject(new Error('Oops!'));
 }
 
 //  we get a promise here
@@ -10,12 +12,12 @@ const promise = foo();
 
 promise
   .then((result) => console.log('then', result))
-  .catch((error) => console.log('catch', error))
+  .catch((error) => console.log('catch', error.message))
   .finally(() => console.log('finally'));
 
 console.log('End of script');
 
 //  because promise is asynchronous, we see:
 //  End of script
-//  then Hi there!
+//  catch Oops!
 //  finally
