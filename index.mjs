@@ -1,5 +1,10 @@
 function foo() {
-  return Promise.resolve('Hi there!');
+  //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise#constructor
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('Hi there!');
+    }, 2000);
+  });
 }
 
 //  we get a promise here
@@ -17,5 +22,6 @@ console.log('End of script');
 
 //  because promise is asynchronous, we see:
 //  End of script
+//  -- 2 seconds delay
 //  then Hi there!
 //  finally
