@@ -22,17 +22,36 @@ function increment(n) {
   });
 }
 
-square(5)
-  .then((result) => cube(result)) //  cube returns promise
-  .then((result) => increment(result)) //  increment returns promise
-  .then((result) => console.log('then', result)) //  chained; result comes from increment now
-  .catch((error) => console.log('catch', error))
-  .finally(() => console.log('finally'));
+//  In ES2017, we have async and await constructs, using which,
+//  we can write much easier asynchronous code
+
+//  create a function with async keyword
+
+async function computeResult() {
+  //  in case promise chain is broken
+  //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch
+  try {
+    //    these lines are executed in sequential order
+    const squareValue = await square(5); //  squareValue is not a promise but value 25
+    console.log('square completed', squareValue);
+    const cubeValue = await cube(squareValue); //  cubeValue is 15625
+    console.log('cube completed', cubeValue);
+    const incrementValue = await increment(cubeValue); //  incrementValue is 15626
+    console.log('incrementValue completed', incrementValue);
+  } catch (error) {
+    console.log('Error occurred', error.message);
+  } finally {
+    console.log('finally');
+  }
+}
+
+computeResult(); //  this call is still asynchronous
 
 console.log('End of script');
 
-//  because promise is asynchronous, we see:
-//  End of script
-//  -- 2.5 seconds delay
-//  then 15626      ((5^2)^3 + 1 = 15626)
-//  finally
+// Output----
+// End of script
+// square completed 25
+// cube completed 15625
+// incrementValue completed 15626
+// finally
