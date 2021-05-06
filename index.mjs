@@ -1,11 +1,21 @@
-//  JavaScript event-loop schedules the asynchronous code
+function foo() {
+  return Promise.resolve('Hi there!');
+}
 
-Promise.resolve('Hi there!').then((data) =>
-  console.log('Promise result', data)
-);
+//  we get a promise here
+const promise = foo();
+
+//  provide then, catch, and finally callbacks to this promise
+//  they will be invoked asynchronously
+
+promise
+  .then((result) => console.log('then', result))
+  .catch((error) => console.log('catch', error))
+  .finally(() => console.log('finally'));
 
 console.log('End of script');
 
 //  because promise is asynchronous, we see:
 //  End of script
-//  Promise result Hi there!
+//  then Hi there!
+//  finally
